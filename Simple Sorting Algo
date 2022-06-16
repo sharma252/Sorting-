@@ -1,0 +1,80 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define F(i,L,R) for (int i = L; i < R; i++)
+
+//Insertion Sort : Complexity O(n^2)
+void insertionSort(int arr[],int n){
+  
+  //Intially start with 1 and compare with 0th element only.
+  for(int i=1;i<n;i++){
+
+    //Store element at i in key cuz it,s value will be losted when we move elements back and forth.
+    int key = arr[i];
+    int prev = i-1;
+
+    while(prev>=0 && key<arr[prev]){
+      arr[prev+1] = arr[prev];
+      prev--;
+    }
+    //Finally put key element at its place.
+    arr[prev+1] = key;
+  }
+  
+  F(i,0,n)
+    cout<<arr[i]<<" ";
+  cout<<endl;
+}
+
+//Selection Sort : Complexity O(n^2)
+void selectionSort(int arr[],int n){
+  //Find minimum element in unsorted part and put it in the begining
+  //Increase the begin by one.
+
+  for(int i=0;i<n-1;i++){
+    //Consider min element is at ith index.
+    //If it changes we swap it and if it didn,t still won't do any harm.
+    int idx=i;
+    for(int j=i+1;j<n;j++){
+      if(arr[idx]>arr[j])
+        idx = j;
+    }
+    swap(arr[i],arr[idx]);
+  }
+
+  F(i,0,n)
+    cout<<arr[i]<<" ";
+  cout<<endl;
+}
+
+//Bubble Sort : Complexity is O(n^2).
+void bubbleSort(int arr[],int n){
+
+  //Traverse the array n-1 times
+  for(int i=0;i<n-1;i++){
+    //Inner traversal is n-i-1 as i elements are already in place.
+    for(int j=0;j<n-i-1;j++){
+      if(arr[j]>arr[j+1])
+        swap(arr[j],arr[j+1]);
+    }
+  }
+
+  F(i,0,n)
+    cout<<arr[i]<<" ";
+  cout<<endl;
+}
+
+int main(){
+  int n;
+  cin>>n;
+
+  int arr[n];
+
+  F(i,0,n)
+    cin>>arr[i];
+
+  bubbleSort(arr,n);
+  selectionSort(arr,n);
+  insertionSort(arr,n);
+
+  return 0;
+}
