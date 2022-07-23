@@ -64,3 +64,10 @@ int main(){
         cout<<arr[i]<<" ";
 
 }
+
+/*
+    See the only reason to pick pivot at the beginner is to understand the algo
+    but if array is already sorted its complexity become O(n^2)
+    So its better to choose a random element in array to pivot or mid element to keep
+    complexity near to O(nlog(n)). There is no guareenty though.
+*/
