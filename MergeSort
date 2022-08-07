@@ -1,0 +1,89 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define F(i,L,R) for (int i = L; i < R; i++)
+
+//Merging Function:
+//It has two temporary array.
+void mergeArr(int arr[],int left,int mid,int right){
+    //Size of left array.
+    int lSize = mid-left+1;
+    //Size of right array
+    int rSize = right-mid;
+
+    //Two temporary array.
+    int lTemp[lSize];
+    int rTemp[rSize];
+
+    //keep an eye on the index.
+    for(int i=0;i<lSize;i++)
+        lTemp[i] = arr[left+i];
+
+    for(int i=0;i<rSize;i++)
+        rTemp[i] = arr[i+mid+1];
+
+    int lPtr=0,rPtr=0,ptr=left;
+
+    while(lPtr<lSize && rPtr<rSize){
+        //If element of left array is smaller or greater then right array
+        //Store it in original array at its respective index and increment 
+        //left array ptr.
+        if(lTemp[lPtr]<=rTemp[rPtr]){
+            arr[ptr] = lTemp[lPtr];
+            lPtr++;
+        }
+        //Otherwise move right ptr after coping right array value in 
+        //original array.
+        else{
+            arr[ptr] = rTemp[rPtr];
+            rPtr++;
+        }
+        //Every time original pointer moves forward.
+        ptr++;
+    }
+
+    //If element left in left or right array copy them in original.
+    while(lPtr<lSize){
+        arr[ptr] = lTemp[lPtr];
+        lPtr++;
+        ptr++;
+    }
+
+    while(rPtr<rSize){
+        arr[ptr] = rTemp[rPtr];
+        rPtr++;
+        ptr++;
+    }
+}
+
+//Recursive Merge Sort Array Function:
+void mergeSort(int arr[],int beg,int end){
+    if(beg>=end)
+        return;
+
+    int mid = beg + (end-beg)/2;
+
+    //Break the array in two equal parts and keep doing it
+    //Untill we left with only single element in the array.
+    mergeSort(arr,beg,mid);
+    mergeSort(arr,mid+1,end);
+
+    //Merge them from bottom to top.
+    mergeArr(arr,beg,mid,end);
+}
+
+int main(){
+    int n;
+    cin>>n;
+
+    int arr[n];
+
+    for(int i=0;i<n;i++)
+        cin>>arr[i];
+
+    mergeSort(arr,0,n);
+
+    for(int i=0;i<n;i++)
+        cout<<arr[i]<<" ";
+
+    return 0;
+}
