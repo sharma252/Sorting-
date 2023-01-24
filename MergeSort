@@ -87,3 +87,6 @@ int main(){
 
     return 0;
 }
+
+//Formula of left array size and right array is difficult 
+//and storing the value in temporary array index too.
