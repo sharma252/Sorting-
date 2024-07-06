@@ -8,8 +8,27 @@ void printArr(vector<int> &nums){
   cout<<endl;
 }
 
-//partition function to find the index of pivot element.
-int partition(vector<int> &nums,int start,int end){
+//partition function to find the index of pivot element using for loop.
+int partitionUsingFor(vector<int> &nums,int start,int end){
+  int pivotElement = nums[end];
+  //consider that pivotElement idx is start only.
+  int pivotIdx=start;
+
+  for(int itr=start;itr<end;itr++){
+    //if we find an element smaller then pivot
+    //then we need to take it to the left.
+    if(nums[itr] <=pivotElement){
+      swap(nums[itr],nums[pivotIdx]);
+      pivotIdx++;
+    }
+  }
+  //finally swap the pivot to its correct position and return idx.
+  swap(nums[end],nums[pivotIdx]);
+  return pivotIdx;
+}
+
+//partition function to find the index of pivot element using while loop.
+int partitionUsingWhile(vector<int> &nums,int start,int end){
   int pivotElement = nums[end];
   //take two pointer one for left element of pivot
   //one for the right side element.
@@ -42,7 +61,8 @@ void quickSortHelper(vector<int> &nums,int start,int end){
     return;
   }
 
-  int pivotIdx = partition(nums,start,end);
+  // int pivotIdx = partitionUsingWhile(nums,start,end);
+  int pivotIdx = partitionUsingFor(nums,start,end);
   //run for only element smaller and larger then pivot 
   //as pivot is already sorted.
   quickSortHelper(nums,start,pivotIdx-1);
