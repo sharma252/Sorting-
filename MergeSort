@@ -1,92 +1,98 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define F(i,L,R) for (int i = L; i < R; i++)
 
-//Merging Function:
-//It has two temporary array.
-void mergeArr(int arr[],int left,int mid,int right){
-    //Size of left array.
-    int lSize = mid-left+1;
-    //Size of right array
-    int rSize = right-mid;
-
-    //Two temporary array.
-    int lTemp[lSize];
-    int rTemp[rSize];
-
-    //keep an eye on the index.
-    for(int i=0;i<lSize;i++)
-        lTemp[i] = arr[left+i];
-
-    for(int i=0;i<rSize;i++)
-        rTemp[i] = arr[i+mid+1];
-
-    int lPtr=0,rPtr=0,ptr=left;
-
-    while(lPtr<lSize && rPtr<rSize){
-        //If element of left array is smaller or greater then right array
-        //Store it in original array at its respective index and increment 
-        //left array ptr.
-        if(lTemp[lPtr]<=rTemp[rPtr]){
-            arr[ptr] = lTemp[lPtr];
-            lPtr++;
-        }
-        //Otherwise move right ptr after coping right array value in 
-        //original array.
-        else{
-            arr[ptr] = rTemp[rPtr];
-            rPtr++;
-        }
-        //Every time original pointer moves forward.
-        ptr++;
-    }
-
-    //If element left in left or right array copy them in original.
-    while(lPtr<lSize){
-        arr[ptr] = lTemp[lPtr];
-        lPtr++;
-        ptr++;
-    }
-
-    while(rPtr<rSize){
-        arr[ptr] = rTemp[rPtr];
-        rPtr++;
-        ptr++;
-    }
+// Function to print the elements of the array
+void printArr(vector<int> &nums){
+  for (int i = 0; i < nums.size(); i++){
+    cout << nums[i] << " ";
+  }
+  cout << endl;
 }
 
-//Recursive Merge Sort Array Function:
-void mergeSort(int arr[],int beg,int end){
-    if(beg>=end)
-        return;
+// Function to merge two sorted subarrays into a single sorted array
+void mergeArr(vector<int> &nums, int start, int mid, int end){
+  // Calculate the sizes of the two temporary arrays
+  int leftIdx = mid - start + 1;
+  int rightIdx = end - mid;
 
-    int mid = beg + (end-beg)/2;
+  // Create temporary arrays to hold the elements of the subarrays
+  int leftArr[leftIdx];
+  int rightArr[rightIdx];
 
-    //Break the array in two equal parts and keep doing it
-    //Untill we left with only single element in the array.
-    mergeSort(arr,beg,mid);
-    mergeSort(arr,mid+1,end);
+  // Copy data to the temporary arrays
+  for(int itr = 0; itr < leftIdx; itr++){
+    leftArr[itr] = nums[start + itr];
+  }
 
-    //Merge them from bottom to top.
-    mergeArr(arr,beg,mid,end);
+  for(int itr = 0; itr < rightIdx; itr++){
+    rightArr[itr] = nums[mid + itr + 1];
+  }
+
+  // Merge the temporary arrays back into the original array
+  int leftPtr = 0, rightPtr = 0;
+  int itr = start;
+
+  // Merge the two subarrays while maintaining order
+  while(leftPtr < leftIdx && rightPtr < rightIdx){
+    if(leftArr[leftPtr] <= rightArr[rightPtr]){
+      nums[itr] = leftArr[leftPtr];
+      leftPtr++;
+    } else {
+      nums[itr] = rightArr[rightPtr];
+      rightPtr++;
+    }
+    itr++;
+  }
+
+  // Copy any remaining elements from the left temporary array
+  while(leftPtr < leftIdx){
+    nums[itr] = leftArr[leftPtr];
+    leftPtr++;
+    itr++;
+  }
+
+  // Copy any remaining elements from the right temporary array
+  while(rightPtr < rightIdx){
+    nums[itr] = rightArr[rightPtr];
+    rightPtr++;
+    itr++;
+  }
+}
+
+// Helper function to perform merge sort
+void mergeSortHelper(vector<int> &nums, int start, int end){
+  // Base case: if the array has one or no elements, it's already sorted
+  if(start >= end){
+    return;
+  }
+
+  // Find the middle point of the array
+  int mid = start + (end - start) / 2;
+
+  // Recursively sort the first and second halves
+  mergeSortHelper(nums, start, mid);
+  mergeSortHelper(nums, mid + 1, end);
+
+  // Merge the sorted halves
+  mergeArr(nums, start, mid, end);
+}
+
+// Function to initiate the merge sort process
+void mergeSort(vector<int> &nums){
+  mergeSortHelper(nums, 0, nums.size() - 1);
 }
 
 int main(){
-    int n;
-    cin>>n;
+    vector<int> nums = {6, 2, 5, 3, 8, 9, 1};
 
-    int arr[n];
+    // Print the array before sorting
+    printArr(nums);
 
-    for(int i=0;i<n;i++)
-        cin>>arr[i];
+    // Perform merge sort
+    mergeSort(nums);
 
-    mergeSort(arr,0,n);
-
-    for(int i=0;i<n;i++)
-        cout<<arr[i]<<" ";
+    // Print the array after sorting
+    printArr(nums);
 
     return 0;
 }
-
-//Formula of left array size and right array is difficult 
-//and storing the value in temporary array index too.
